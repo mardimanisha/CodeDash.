@@ -32,10 +32,10 @@ export default function Header() {
                 {/* Desktop: Buttons */}
                 <div className="hidden md:flex space-x-2 sm:space-x-4">
                     <Link href="auth/login">
-                        <Button variant="ghost" size="lg" className="sm:size-default cursor-pointer">Login</Button>
+                        <Button variant="ghost" size="sm" className="sm:size-default cursor-pointer text-sm hover:bg-primary transition-colors duration-200 ease-in-out hover:text-white">Login</Button>
                     </Link>
                     <Link href="auth/signup">
-                        <Button size="lg" className="sm:size-default cursor-pointer">Sign Up</Button>
+                        <Button size="sm" className="sm:size-default cursor-pointer text-sm hover:scale-105 transition-transform duration-200 ease-in-out">Sign Up</Button>
                     </Link>
                 </div>
 
