@@ -5,12 +5,26 @@ import { useState } from 'react';
 import QRContentInput from './QRContentInput';
 import QRPreview from './QRPreview';
 import { useQRGenerator } from './useQRGenerator';
+import { useAuth } from '@/context/AuthContext';
+import AuthModal from '../AuthModal';
 
 export default function QRInputSection() {
+    const { session } = useAuth();
     const [selectedType, setSelectedType] = useState<'text' | 'url' | 'image' | 'pdf' | 'email'>('text');
     const [content, setContent] = useState<string | File | null>('')
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     const { qrValue, isGenerating, generated, generateQR } = useQRGenerator();
+    
+    const handleGenerate = () => {
+        if (!session?.user) {
+            setShowAuthModal(true);
+            return;
+        }
+
+        generateQR(content);
+    }
+
     return (
         <motion.section
             className='w-full py-10'
@@ -35,7 +49,7 @@ export default function QRInputSection() {
                                 selectedType={selectedType}
                                 content={content}
                                 setContent={setContent}
-                                onGenerate={() => generateQR(content)}
+                                onGenerate={handleGenerate}
                             />
                         </div>
                     </div>
@@ -49,6 +63,9 @@ export default function QRInputSection() {
                     />
                 </div>
             </div>
+
+            {/* Auth Modal */}
+            <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
         </motion.section>
     )
 }

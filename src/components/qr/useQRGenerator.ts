@@ -1,6 +1,9 @@
+import { useAuth } from "@/context/AuthContext";
+import { uploadFile } from "@/lib/uploadFile";
 import { useState } from "react";
 
 export function useQRGenerator() {
+  const { user } = useAuth();
   const [isGenerating, setIsGenerating] = useState(false);
   const [qrValue, setQRValue] = useState<string>("");
   const [generated, setGenerated] = useState(false);
@@ -10,28 +13,27 @@ export function useQRGenerator() {
     setGenerated(false);
     setQRValue("");
 
-    setTimeout(() => {
-      if (typeof content === "string") {
-        setQRValue(content.trim());
-      } else if (content instanceof File) {
-        const fileType = content.type;
+    if (!content) {
+      setIsGenerating(false);
+      return;
+    }
 
-        if (fileType.startsWith("image/") || fileType === "application/pdf") {
-          const objectUrl = URL.createObjectURL(content);
-          setQRValue(objectUrl);
-
-          URL.revokeObjectURL(objectUrl);
-        } else {
-          console.warn("Unsupported file type for QR code.");
-          setQRValue("");
-        }
-      } else {
+    if (typeof content === "string") {
+      setQRValue(content.trim());
+    } else if (content instanceof File && user?.id) {
+      try {
+        const publicUrl = await uploadFile(content, user.id);
+        setQRValue(publicUrl);
+      } catch (error) {
+        console.error("Upload failed", error);
         setQRValue("");
       }
+    }
 
+    setTimeout(() => {
       setIsGenerating(false);
       setGenerated(true);
-    }, 1200);
+    }, 1000);
   };
 
   return {

@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input';
+import { useAuth} from '@/context/AuthContext'
+import AuthModal from '../AuthModal';
 
 type Props = {
     selectedType: string;
@@ -11,9 +13,21 @@ type Props = {
 }
 
 export default function QRContentInput({ selectedType, content, setContent, onGenerate }: Props) {
+    const { user } = useAuth();
+    const [authOpen, setAuthOpen] = useState(false);
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) setContent(file);
+    }
+
+    const handleCreateClick = () => {
+        if (!user) {
+            setAuthOpen(true);
+            return;
+        }
+
+        onGenerate();
     }
 
     return (
@@ -66,11 +80,14 @@ export default function QRContentInput({ selectedType, content, setContent, onGe
            
 
             <Button
-                onClick={onGenerate}
+                onClick={handleCreateClick}
                 className='!rounded-3xl cursor-pointer text-md w-full lg:max-w-40 hover:scale-105 transition-transform duration-200 ease-in-out'
             >
                 Create
             </Button>
+
+            {/* Modal for Authentication */}
+            <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
         </div>
     )
 }
