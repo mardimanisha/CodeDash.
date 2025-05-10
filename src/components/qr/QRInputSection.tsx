@@ -32,7 +32,7 @@ export default function QRInputSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{duration: 0.8}}
         >
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-10'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8'>
                 <h2 className='text-center text-2xl sm:text-4xl md:text-5xl lg:text-left font-bold mb-20'> Create your own QR code in seconds</h2>
 
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-16'>

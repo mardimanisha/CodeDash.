@@ -2,9 +2,12 @@
 
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import QRCode from "react-qr-code";
+import { QRCodeCanvas } from "qrcode.react";
 import { QrCode } from "lucide-react";
 import {motion} from 'framer-motion'
+import { useRef } from "react";
+
+
 
 type Props = {
     content: string | File | null;
@@ -13,7 +16,21 @@ type Props = {
     generated: boolean;
 }
 
-export default function QRPreview({  qrValue, isGenerating, generated }: Props) {
+export default function QRPreview({ qrValue, isGenerating, generated }: Props) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    const handleDownload = () => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        
+        const pngUrl = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = pngUrl;
+        downloadLink.download = "qr-code.png";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
     
     return (
         <div>
@@ -31,7 +48,12 @@ export default function QRPreview({  qrValue, isGenerating, generated }: Props) 
                                 transition={{ duration: 0.5 }}
                                 className="border-2 border-neutral-300 p-8 my-4 rounded-xl"
                             >
-                                <QRCode value={qrValue} size={180} />
+                                <QRCodeCanvas
+                                    value={qrValue}
+                                    includeMargin={true}
+                                    size={180}
+                                    ref={canvasRef}
+                                />
                             </motion.div>
                         ) : (
                             <div className="text-center">
@@ -42,7 +64,14 @@ export default function QRPreview({  qrValue, isGenerating, generated }: Props) 
                             </div> 
                     )}
                     
-                    <Button disabled={!qrValue || !generated} className="cursor-pointer">Download</Button>
+                    <Button
+                        disabled={!qrValue || !generated}
+                        className="cursor-pointer"
+                        onClick={handleDownload}
+                    >
+                        Download
+                    </Button>
+
                 </CardContent>
             </Card>
         </div>

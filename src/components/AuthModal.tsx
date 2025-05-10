@@ -1,8 +1,9 @@
-import { Dialog, DialogContent } from "@radix-ui/react-dialog";
-import { useEffect, useState } from "react";
+
+import { useEffect } from "react";
 import {Auth} from '@supabase/auth-ui-react'
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/lib/supabaseClient";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 
 type Props = {
     open: boolean;
@@ -10,20 +11,27 @@ type Props = {
 }
 
 export default function AuthModal({ open, onClose }: Props) {
-    const [modalOpen, setModalOpen] = useState(open);
 
     useEffect(() => {
-        setModalOpen(open);
-    }, [open])
+        const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                onClose();
+            }
+        })
 
-    const handleClose = () => {
-        setModalOpen(false);
-        onClose();
-    }
+        return () => listener.subscription.unsubscribe()
+    }, [onClose])
+
 
     return (
-        <Dialog open={modalOpen} onOpenChange={handleClose}>
-            <DialogContent className="p-8 max-w-lg">
+        <Dialog open={open} onOpenChange={onClose}>
+            <DialogContent className="px-4 py-6 sm:px-6 sm:py-8 sm:max-w-md rounded-2xl sm:rounded-3xl shadow-xl animate-in fade-in-90 slide-in-from-top-1 duration-300">
+                <DialogHeader>
+                    <DialogTitle className="text-xl font-semibold text-center">Login or Sign Up</DialogTitle>
+                    <DialogDescription className="text-center mb-4 text-muted-foreground">
+                        Sign in with Google or email to continue
+                    </DialogDescription>
+                </DialogHeader>
                 <Auth
                     supabaseClient={supabase}
                     providers={['google']}
