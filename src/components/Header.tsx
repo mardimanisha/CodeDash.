@@ -26,6 +26,7 @@ export default function Header() {
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
+        window.location.reload();
     }
 
     return (
@@ -36,7 +37,7 @@ export default function Header() {
                 animate={{ y: 0 }}
                 transition={{duration: 0.4}}
             >
-                <div className="max-w-8xl mx-auto px-8 sm:px-12 md:px-16 lg:px-24 py-2 md:py-6 lg:py-6 flex justify-between items-center">
+                <div className="max-w-8xl mx-auto px-8 sm:px-12 md:px-16 lg:px-24 py-2 md:py-4 lg:py-6 flex justify-between items-center">
                     <Link href="/" className="text-xl sm:text-3xl font-bold tracking-tight">
                         CodeDash<span className="text-primary">.</span>
                     </Link>
@@ -46,10 +47,12 @@ export default function Header() {
                         {user ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="flex items-center gap-2 text-sm cursor-pointer px-3 focus-visible:outline-none focus-visible:ring-0">
-                                        <User className="w-4 h-4"/>
-                                        <span>{ user.user_metadata?.name || user.email}</span>
-                                    </Button>
+                                    <div className="flex items-center gap-2 text-lg cursor-pointer px-3 focus-visible:outline-none focus-visible:ring-0">
+                                        <span className="p-3 rounded-full border-1 hover:bg-gray-800/10 transition-colors duration-300">
+                                            <User className="w-4 h-4"/>
+                                        </span>
+                                        <span className="tracking-wide">{ user.user_metadata?.name || user.email}</span>
+                                    </div>
                                 </DropdownMenuTrigger>
 
                                 <DropdownMenuContent align="end">

@@ -27,6 +27,7 @@ export default function QRInputSection() {
 
     return (
         <motion.section
+            id="qr-input-section"
             className='w-full py-10'
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +55,6 @@ export default function QRInputSection() {
                         </div>
                     </div>
 
-                    {/* Right - Preview */}
                     <QRPreview
                         content={content}
                         qrValue={qrValue}

@@ -5,7 +5,13 @@ import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
-    
+    const handleScroll = () => {
+        const section = document.getElementById("qr-input-section");
+
+        if (section) {
+            section.scrollIntoView({behavior: "smooth"})
+        }
+    }
 
     return (
         <motion.section
@@ -19,7 +25,10 @@ export default function Hero() {
                     <h1 className="text-5xl sm:text-7xl md:text-9xl font-bold m-6">QR Code Generator</h1>
                     <p className="m-4 text-xl sm:text-3xl">Easily create free custom QR codes to promote your website, share content, and drive more sales.</p>
 
-                    <Button className="group mt-6 py-8 rounded-4xl text-xl cursor-pointer overflow-hidden relative">
+                    <Button
+                        onClick={handleScroll}
+                        className="group mt-6 py-8 rounded-4xl text-xl cursor-pointer overflow-hidden relative"
+                    >
                         <span className="px-6 sm:px-10 md:px-20 py-6 md:py-10 flex justify-center items-center">
                             <span className="transform transition-transform duration-300 group-hover:-translate-x-2">
                                 Create QR Code
