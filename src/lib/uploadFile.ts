@@ -1,4 +1,5 @@
-import { supabase } from "./supabaseClient";
+"use client";
+import { getSupabaseClient } from "./supabaseClient";
 
 /**
  * Uploads a file to Supabase Storage and returns its public URL.
@@ -8,6 +9,7 @@ import { supabase } from "./supabaseClient";
  * @returns The public URL of the uploaded file.
  */
 export async function uploadFile(file: File, userId: string): Promise<string> {
+  const supabase = getSupabaseClient();
   const timestamp = Date.now();
   const path = `${userId}/${timestamp}-${file.name}`;
 
