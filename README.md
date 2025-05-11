@@ -1,4 +1,4 @@
-# 🟡 CodeDash. - QR Generator
+# CodeDash. - QR Generator
 
 A curated gallery of mustard-colored inspiration.
 
