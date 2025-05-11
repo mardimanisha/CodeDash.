@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from 'framer-motion';
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, User } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 import AuthModal from "./AuthModal";
 
 
@@ -15,6 +15,7 @@ export default function Header() {
     const [scrolled, setScrolled] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const {user} = useAuth();
+    const supabase = useMemo(() => getSupabaseClient(), [])
 
     useEffect(() => {
         const onScroll = () => {
