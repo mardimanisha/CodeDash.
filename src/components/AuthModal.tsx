@@ -1,8 +1,8 @@
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {Auth} from '@supabase/auth-ui-react'
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
 
 export default function AuthModal({ open, onClose }: Props) {
 
+    const supabase = useMemo(() => getSupabaseClient(), [])
     useEffect(() => {
         const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
             if (session) {
@@ -20,7 +21,7 @@ export default function AuthModal({ open, onClose }: Props) {
         })
 
         return () => listener.subscription.unsubscribe()
-    }, [onClose])
+    }, [onClose, supabase])
 
 
     return (

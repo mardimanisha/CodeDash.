@@ -1,6 +1,6 @@
 'use client'
 
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [session, setSession] = useState<Session | null>(null);
 
     useEffect(() => {
+        const supabase = getSupabaseClient();
         const fetchSession = async () => {
             const { data } = await supabase.auth.getSession();
             setSession(data.session);
