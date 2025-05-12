@@ -1,7 +1,5 @@
 # CodeDash. - QR Generator
 
-A curated gallery of mustard-colored inspiration.
-
 CodeDash QR Generator is a clean, modern QR code generator and management app built with Next.js and Supabase. The app allows authenticated users to quickly create and download QR codes from various inputs (text, URLs, email addresses, PDFs, or image uploads). It features a responsive, user-friendly interface with smooth animations provided by Framer Motion.
 
 ---
